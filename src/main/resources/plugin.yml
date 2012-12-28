@@ -1,0 +1,10 @@
+name: SwornCritters
+version: "${project.version}"
+main: net.t7seven7t.sworncritters.SwornCritters
+#commands:
+softdepend: [Factions, SwornNations]
+database: false
+description: "SwornCritters provides alternate creature spawning algorithms to vanilla."
+author: "t7seven7t"
+load: postworld
+#permissions:

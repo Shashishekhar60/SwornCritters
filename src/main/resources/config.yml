@@ -1,0 +1,19 @@
+debug: true
+
+#Interval between mob spawn events
+spawnTicks: 2
+
+#Chance that a creature will spawn during spawn event:
+spawnChance: 15
+
+#Legendary Monsters Enabled
+legendariesEnabled: true
+
+#Legendary spawn notification
+legendariesNotify: true
+
+#Max number of animals in radius 32 around player
+animalCapPerPlayer: 4
+
+#Max number of monsters in radius 32 around player
+monsterCapPerPlayer: 15
