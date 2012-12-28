@@ -1,10 +1,10 @@
-debug: true
+debug: false
 
 #Interval between mob spawn events
-spawnTicks: 2
+spawnTicks: 10
 
 #Chance that a creature will spawn during spawn event:
-spawnChance: 15
+spawnChance: 50
 
 #Legendary Monsters Enabled
 legendariesEnabled: true
@@ -13,7 +13,18 @@ legendariesEnabled: true
 legendariesNotify: true
 
 #Max number of animals in radius 32 around player
-animalCapPerPlayer: 4
+animalCapPerPlayer: 10
 
 #Max number of monsters in radius 32 around player
 monsterCapPerPlayer: 15
+
+#Passive mobs to spawn:
+passiveNormal: [BAT, IRON_GOLEM, MUSHROOM_COW, VILLAGER]
+passiveEnd: [BAT, CHICKEN]
+passiveNether: [PIG, SHEEP, MUSHROOM_COW]
+
+#Hostile mobs to spawn:
+#Note skeleton here represents a wither skeleton
+hostileNormal: [GHAST, SKELETON, MAGMA_CUBE, CAVE_SPIDER, WITCH, BLAZE]
+hostileEnd: [GHAST, SKELETON, WITCH, BLAZE]
+hostileNether: [SKELETON, WITCH, ENDERMAN, CAVE_SPIDER, CREEPER]

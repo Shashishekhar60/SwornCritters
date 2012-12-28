@@ -3,6 +3,10 @@
  */
 package net.t7seven7t.sworncritters;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -31,6 +35,9 @@ public class CreatureSpawnTask extends BukkitRunnable {
 	private final int monsterCapPerPlayer;
 	private final int animalCapPerPlayer;
 	
+	private final Map<Environment, List<EntityType>> passiveEntities;
+	private final Map<Environment, List<EntityType>> hostileEntities;
+	
 	public CreatureSpawnTask(final SwornCritters plugin) {
 		this.plugin = plugin;
 		this.random = new Random();
@@ -41,6 +48,17 @@ public class CreatureSpawnTask extends BukkitRunnable {
 		this.spawnChance = plugin.getConfig().getInt("spawnChance");
 		this.monsterCapPerPlayer = plugin.getConfig().getInt("monsterCapPerPlayer");
 		this.animalCapPerPlayer = plugin.getConfig().getInt("animalCapPerPlayer");
+		
+		passiveEntities = new HashMap<Environment, List<EntityType>>();
+		hostileEntities = new HashMap<Environment, List<EntityType>>();
+		
+		// Get entity types from config.
+		passiveEntities.put(Environment.NORMAL, getEntityListFromConfig("passiveNormal"));
+		passiveEntities.put(Environment.THE_END, getEntityListFromConfig("passiveEnd"));
+		passiveEntities.put(Environment.NETHER, getEntityListFromConfig("passiveNether"));
+		hostileEntities.put(Environment.NORMAL, getEntityListFromConfig("hostileNormal"));
+		hostileEntities.put(Environment.THE_END, getEntityListFromConfig("hostileEnd"));
+		hostileEntities.put(Environment.NETHER, getEntityListFromConfig("hostileNether"));
 	}
 
 	public void run() {
@@ -50,40 +68,43 @@ public class CreatureSpawnTask extends BukkitRunnable {
 					final int nearbyEntityCount = getNearbyEntityCount(player, 32);
 
 					// If day time only spawn passive mobs.
-					if (player.getWorld().getTime() <= 13500 
-							&& !player.getWorld().getEnvironment().equals(Environment.NETHER) 
-							&& !player.getWorld().getEnvironment().equals(Environment.THE_END)) {
+					if (player.getWorld().getTime() <= 13500) {
 						if (nearbyEntityCount <= animalCapPerPlayer) {
-							EntityType type = AnimalType.getRandom();
+							final EntityType type = getRandomEntityType(passiveEntities.get(player.getWorld().getEnvironment()));
+							System.out.println(type.toString());
 							final int xOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final int zOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final Location spawnLocation = player.getLocation().add(xOffset, 0, zOffset);
 							
 							// Make sure entity doesn't spawn inside of blocks or floating in the air
-							while (	player.getWorld().getBlockAt(spawnLocation.add(0, 1, 0)).getType().isSolid() 
+							while (	spawnLocation.add(0, 1, 0).getBlockY() < 250 
+									&& player.getWorld().getBlockAt(spawnLocation).getType().isSolid() 
 									&& player.getWorld().getBlockAt(spawnLocation.clone().add(0, 1, 0)).getType().isSolid());
-							while (player.getWorld().getBlockAt(spawnLocation.subtract(0, 1, 0)).getType() == Material.AIR);
+							while ( spawnLocation.subtract(0, 1, 0).getBlockY() > 2
+									&& player.getWorld().getBlockAt(spawnLocation).getType() == Material.AIR);
 							
 							player.getWorld().spawn(spawnLocation.add(0, 1, 0), type.getEntityClass());
 						}
 					} else {
 						if (nearbyEntityCount <= monsterCapPerPlayer && random.nextInt(3) == 0) {
-							EntityType type = MonsterType.getRandom();
+							final EntityType type = getRandomEntityType(hostileEntities.get(player.getWorld().getEnvironment()));
+							System.out.println(type.toString());
 							final int xOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final int zOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final Location spawnLocation = player.getLocation().add(xOffset, 0, zOffset);
 							
 							// Make sure entity doesn't spawn inside of blocks or floating in the air
-							while (	player.getWorld().getBlockAt(spawnLocation.add(0, 1, 0)).getType().isSolid() 
+							while (	spawnLocation.add(0, 1, 0).getBlockY() < 250 
+									&& player.getWorld().getBlockAt(spawnLocation).getType().isSolid() 
 									&& player.getWorld().getBlockAt(spawnLocation.clone().add(0, 1, 0)).getType().isSolid());
-							while (player.getWorld().getBlockAt(spawnLocation.subtract(0, 1, 0)).getType() == Material.AIR);
+							while ( spawnLocation.subtract(0, 1, 0).getBlockY() > 2
+									&& player.getWorld().getBlockAt(spawnLocation).getType() == Material.AIR);
 							
 							final LivingEntity monster = (LivingEntity) player.getWorld().spawn(spawnLocation.add(0, 1, 0), type.getEntityClass());
 							
 							// Attempt to randomly make some skeletons wither skeletons
 							if (monster instanceof Skeleton) {
-								if (random.nextBoolean())
-									((Skeleton) monster).setSkeletonType(SkeletonType.WITHER);
+								((Skeleton) monster).setSkeletonType(SkeletonType.WITHER);
 							}
 						}
 					}
@@ -94,6 +115,17 @@ public class CreatureSpawnTask extends BukkitRunnable {
 	
 	private int getNearbyEntityCount(final Entity entity, final int radius) {
 		return entity.getNearbyEntities(radius, radius, radius).size();
+	}
+	
+	private EntityType getRandomEntityType(final List<EntityType> list) {
+		return list.get(new Random().nextInt(list.size()));
+	}
+	
+	private List<EntityType> getEntityListFromConfig(final String path) {
+		final List<EntityType> ret = new ArrayList<EntityType>();
+		for (String string : plugin.getConfig().getStringList(path))
+			ret.add(EntityType.valueOf(string));
+		return ret;
 	}
 	
 }

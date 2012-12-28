@@ -50,9 +50,11 @@ public class LegendarySpawnTask extends BukkitRunnable {
 				final Location spawnLocation = player.getLocation().add(xOffset, 0, zOffset);
 				
 				// Make sure entity doesn't spawn inside of blocks or floating in the air
-				while (	player.getWorld().getBlockAt(spawnLocation.add(0, 1, 0)).getType().isSolid() 
+				while (	spawnLocation.add(0, 1, 0).getBlockY() < 250 
+						&& player.getWorld().getBlockAt(spawnLocation).getType().isSolid() 
 						&& player.getWorld().getBlockAt(spawnLocation.clone().add(0, 1, 0)).getType().isSolid());
-				while (player.getWorld().getBlockAt(spawnLocation.subtract(0, 1, 0)).getType() == Material.AIR);
+				while ( spawnLocation.subtract(0, 1, 0).getBlockY() > 2
+						&& player.getWorld().getBlockAt(spawnLocation).getType() == Material.AIR);
 				
 				LivingEntity legendary = (LivingEntity) player.getWorld().spawn(spawnLocation.add(0, 1, 0), type.getEntityClass());
 				if (type.equals(EntityType.GIANT)) {

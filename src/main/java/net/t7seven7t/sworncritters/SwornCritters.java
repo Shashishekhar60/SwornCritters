@@ -22,6 +22,12 @@ public class SwornCritters extends JavaPlugin {
 	public void onEnable() {
 		clearEntities();
 		
+		if (!getDataFolder().exists())
+			getDataFolder().mkdir();
+		
+		saveDefaultConfig();
+		reloadConfig();
+		
 		creatureSpawnTaskId = getServer().getScheduler()
 				.runTaskTimer(	this, 
 								new CreatureSpawnTask(this), 

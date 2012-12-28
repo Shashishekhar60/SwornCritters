@@ -12,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,16 +27,7 @@ public class EntityListener implements Listener {
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void onCreatureSpawn(final CreatureSpawnEvent event) {
-		// Allow vanilla squid spawning, block all other natural spawns
-		if (event.getEntityType() != EntityType.SQUID 
-				&& event.getEntityType() != EntityType.COW 
-				&& event.getEntityType() != EntityType.CHICKEN 
-				&& event.getEntityType() != EntityType.PIG
-				&& event.getEntityType() != EntityType.SHEEP) {
-			if (event.getSpawnReason() == SpawnReason.NATURAL || event.getSpawnReason() == SpawnReason.DEFAULT) {
-				event.setCancelled(true);
-			}
-		}
+		// Do nothing :P
 	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
