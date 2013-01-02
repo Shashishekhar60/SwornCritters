@@ -71,7 +71,6 @@ public class CreatureSpawnTask extends BukkitRunnable {
 					if (player.getWorld().getTime() <= 13500) {
 						if (nearbyEntityCount <= animalCapPerPlayer) {
 							final EntityType type = getRandomEntityType(passiveEntities.get(player.getWorld().getEnvironment()));
-							System.out.println(type.toString());
 							final int xOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final int zOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final Location spawnLocation = player.getLocation().add(xOffset, 0, zOffset);
@@ -88,7 +87,6 @@ public class CreatureSpawnTask extends BukkitRunnable {
 					} else {
 						if (nearbyEntityCount <= monsterCapPerPlayer && random.nextInt(3) == 0) {
 							final EntityType type = getRandomEntityType(hostileEntities.get(player.getWorld().getEnvironment()));
-							System.out.println(type.toString());
 							final int xOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final int zOffset = random.nextInt(MAX_DISTANCE_FROM_PLAYER * 2) - MAX_DISTANCE_FROM_PLAYER;
 							final Location spawnLocation = player.getLocation().add(xOffset, 0, zOffset);

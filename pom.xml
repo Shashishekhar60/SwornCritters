@@ -3,7 +3,7 @@
 
     <groupId>net.t7seven7t.sworncritters</groupId>
     <artifactId>SwornCritters</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>SwornCritters</name>
     <url></url>
     <packaging>jar</packaging>

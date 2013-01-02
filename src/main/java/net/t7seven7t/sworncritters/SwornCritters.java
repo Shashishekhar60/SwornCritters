@@ -39,7 +39,7 @@ public class SwornCritters extends JavaPlugin {
 					.runTaskTimer(	this,
 									new LegendarySpawnTask(this),
 									20L,
-									600L).getTaskId();				
+									getConfig().getLong("spawnTicks")).getTaskId();				
 		}
 		
 		getServer().getPluginManager().registerEvents(new EntityListener(this), this);

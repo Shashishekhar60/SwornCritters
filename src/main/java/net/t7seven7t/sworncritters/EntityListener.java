@@ -44,7 +44,7 @@ public class EntityListener implements Listener {
 		if (plugin.getLegendaryEntityId() != null && plugin.getLegendaryEntityId().equals(slime.getUniqueId())) {
 			event.setCount(0);
 			if (event.getEntity().getKiller() != null) {
-				event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), new ItemStack(266, 10));
+				event.getEntity().getWorld().dropItem(event.getEntity().getLocation(), new ItemStack(plugin.getConfig().getInt("slimeDropsType"), plugin.getConfig().getInt("slimeDropsAmount")));
 				event.getEntity().getKiller().sendMessage(ChatColor.GREEN + "You have killed a legendary monster!");
 			}
 			slime.remove();
@@ -58,14 +58,19 @@ public class EntityListener implements Listener {
 	public void onCreatureDeath(final EntityDeathEvent event) {
 		final Entity creature = event.getEntity();
 		if (plugin.getLegendaryEntityId() != null && plugin.getLegendaryEntityId().equals(creature.getUniqueId())) {
-			if (event.getEntityType().equals(EntityType.GIANT) || event.getEntityType().equals(EntityType.WITHER)) {
-				event.setDroppedExp(100);
+			event.getDrops().clear();
+			
+			if (event.getEntityType().equals(EntityType.GIANT)) {
+				event.setDroppedExp(plugin.getConfig().getInt("giantDropsXP"));
+				event.getDrops().add(new ItemStack(plugin.getConfig().getInt("giantDropsType"), plugin.getConfig().getInt("giantDropsAmount")));
+			} else if (event.getEntityType().equals(EntityType.WITHER)) {
+				event.setDroppedExp(plugin.getConfig().getInt("witherDropsXP"));
+				event.getDrops().add(new ItemStack(plugin.getConfig().getInt("witherDropsType"), plugin.getConfig().getInt("witherDropsAmount")));
 			} else if (event.getEntityType().equals(EntityType.SLIME)) {
-				event.setDroppedExp(300);
+				event.setDroppedExp(plugin.getConfig().getInt("slimeDropsXP"));
+				event.getDrops().add(new ItemStack(plugin.getConfig().getInt("slimeDropsType"), plugin.getConfig().getInt("slimeDropsAmount")));
 			} 
 			
-			event.getDrops().clear();
-			event.getDrops().add(new ItemStack(266, 10));
 			creature.remove();
 			plugin.setLegendaryEntityId(null);
 			plugin.setLastLegendaryDeathTime(System.currentTimeMillis());

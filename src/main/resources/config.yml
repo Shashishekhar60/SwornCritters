@@ -1,10 +1,10 @@
 debug: false
 
 #Interval between mob spawn events
-spawnTicks: 10
+spawnTicks: 90
 
 #Chance that a creature will spawn during spawn event:
-spawnChance: 50
+spawnChance: 10
 
 #Legendary Monsters Enabled
 legendariesEnabled: true
@@ -12,11 +12,35 @@ legendariesEnabled: true
 #Legendary spawn notification
 legendariesNotify: true
 
+#Time between legendary spawns
+minutesBetweenLegendaries: 10
+
+#Legendary monster type spawn chances (1/X)
+slimeSpawnChance: 20
+giantSpawnChance: 50
+witherSpawnChance: 200
+
+#Legendary health values
+slimeMaxHealth: 1200
+giantMaxHealth: 1000
+witherMaxHealth: 300
+
+#Legendary drops
+slimeDropsType: 266
+slimeDropsAmount: 10
+slimeDropsXP: 300
+giantDropsType: 266
+giantDropsAmount: 10
+giantDropsXP: 100
+witherDropsType: 266
+witherDropsAmount: 10
+witherDropsXP: 100
+
 #Max number of animals in radius 32 around player
-animalCapPerPlayer: 10
+animalCapPerPlayer: 5
 
 #Max number of monsters in radius 32 around player
-monsterCapPerPlayer: 15
+monsterCapPerPlayer: 8
 
 #Passive mobs to spawn:
 passiveNormal: [BAT, IRON_GOLEM, MUSHROOM_COW, VILLAGER]
@@ -25,6 +49,6 @@ passiveNether: [PIG, SHEEP, MUSHROOM_COW]
 
 #Hostile mobs to spawn:
 #Note skeleton here represents a wither skeleton
-hostileNormal: [GHAST, SKELETON, MAGMA_CUBE, CAVE_SPIDER, WITCH, BLAZE]
-hostileEnd: [GHAST, SKELETON, WITCH, BLAZE]
-hostileNether: [SKELETON, WITCH, ENDERMAN, CAVE_SPIDER, CREEPER]
+hostileNormal: [GHAST, SKELETON, MAGMA_CUBE, CAVE_SPIDER, BLAZE]
+hostileEnd: [GHAST, SKELETON, BLAZE]
+hostileNether: [SKELETON, ENDERMAN, CAVE_SPIDER, CREEPER]
